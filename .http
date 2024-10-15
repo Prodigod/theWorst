@@ -1,0 +1,84 @@
+@host = http://localhost:3000
+
+### get all users.
+GET {{host}}/users
+
+
+
+### get user by ID
+
+GET {{host}}/users/2
+
+### attempt get user id that doesnt exist
+GET {{host}}/users/600
+
+### get all playlists
+GET {{host}}/playlists
+
+### get a playlist w unique id
+GET {{host}}/playlists/4
+
+
+### attempt to get playlist that doesnt exist
+GET {{host}}/playlists/5932
+
+
+
+
+
+### get all tracks
+GET {{host}}/tracks
+
+
+###get track by id
+GET {{host}}/tracks/2
+
+
+###get track that doesnt exist
+GET {{host}}/tracks/500
+
+
+### post new playlist
+POST {{host}}/playlists/21
+Content-Type: application/json
+
+{
+  "id": 16,
+  "name": "Playlist 16",
+  "description": "Playlist 4@SuperCoolDescription",
+  "ownerId": 5,
+  "tracks": [
+    {
+      "id": 2,
+      "name": "Track 2"
+    },
+    {
+      "id": 4,
+      "name": "Track 4"
+    },
+    {
+      "id": 5,
+      "name": "Track 5"
+    },
+    {
+      "id": 7,
+      "name": "Track 7"
+    },
+    {
+      "id": 9,
+      "name": "Track 9"
+    },
+    {
+      "id": 10,
+      "name": "Track 10"
+    },
+    {
+      "id": 11,
+      "name": "Track 11"
+    },
+    {
+      "id": 12,
+      "name": "Track 12"
+    }
+  ]
+}
