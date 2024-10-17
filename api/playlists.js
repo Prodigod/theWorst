@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const prisma = require("../prisma");
-
+const { authenticate } = require("./auth");
 router.get("/", async (req, res, next) => {
   try {
     const playlists = await prisma.playlist.findMany();
@@ -11,28 +11,25 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", authenticate, async (req, res, next) => {
   const { id } = req.params;
   try {
-    const playlist = await prisma.playlist.findUnique({
+    const playlist = await prisma.playlist.findUniqueOrThrow({
       where: { id: +id },
-      include: {
-        tracks: true,
-      },
+      include: { tracks: true },
     });
-    if (!playlist) {
-      return res.status(404).json({ message: "That playlist doesnt exist." });
+    if (playlist.ownerId !== req.user.id) {
+      next({ status: 403, message: "You do not own this playlist." });
     }
     res.json(playlist);
-  } catch (error) {
-    next(error);
+  } catch (e) {
+    next(e);
   }
 });
 
-router.post("/:id", async (req, res, next) => {
+router.post("/", authenticate, async (req, res, next) => {
   const { name, description, ownerId, tracks } = req.body;
 
-  
   if (!name || !description || !ownerId) {
     return next({
       status: 400,

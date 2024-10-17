@@ -13,7 +13,9 @@ GET {{host}}/users/2
 GET {{host}}/users/600
 
 ### get all playlists
+@token = {{login.response.body.token}}
 GET {{host}}/playlists
+Authorization: Bearer {{token}}
 
 ### get a playlist w unique id
 GET {{host}}/playlists/4
@@ -26,11 +28,12 @@ POST {{host}}/register
 Content-Type: application/json
 
 {
-  "email": "example@example.com",
-  "password": "ehh435"
+  "email": "user{{$guid}}@gmail.com",
+  "password": "pass{{$guid}}"
 }
 
 ### login
+# @name login
 POST {{host}}/Login
 Content-Type: application/json
 
@@ -55,8 +58,9 @@ GET {{host}}/tracks/500
 
 
 ### post new playlist
-POST {{host}}/playlists/21
+POST {{host}}/playlists/
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "id": 16,
