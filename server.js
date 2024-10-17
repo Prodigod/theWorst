@@ -1,8 +1,12 @@
 const express = require("express");
 const app = express();
 const PORT = 3000;
+require("dotenv").config();
 
 app.use(express.json());
+
+app.use(require("./api/auth").router);
+
 
 app.use("/users", require("./api/users"));
 app.use("/tracks", require("./api/tracks"));

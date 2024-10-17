@@ -21,7 +21,23 @@ GET {{host}}/playlists/4
 
 ### attempt to get playlist that doesnt exist
 GET {{host}}/playlists/5932
+### register
+POST {{host}}/register
+Content-Type: application/json
 
+{
+  "email": "example@example.com",
+  "password": "ehh435"
+}
+
+### login
+POST {{host}}/Login
+Content-Type: application/json
+
+{
+  "email": "example@example.com",
+  "password": "ehh435"
+}
 
 
 

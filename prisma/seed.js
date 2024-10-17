@@ -2,7 +2,8 @@ const prisma = require("../prisma");
 
 const seed = async (numUsers = 5, numPlaylists = 10) => {
   const users = Array.from({ length: numUsers }, (_, i) => ({
-    username: `User ${i + 1}`,
+    email: `user${i + 1}@gmail.com`,
+    password: `User ${i + 1}`,
   }));
 
   await prisma.user.createMany({ data: users });

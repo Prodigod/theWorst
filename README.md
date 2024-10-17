@@ -1,39 +1,42 @@
-# Jukebox
+# Jukebox Pro
 
-Introducing Jukebox, the successor to Jukebox Mini! We've secured some initial tracks for our digital music platform, so now users can add tracks to their playlists.
+Introducing Jukebox Pro, the successor to Jukebox! Users will now need to make an account and log in before they are able to manage their playlists.
 
 ## Database
 
 ![Visual representation of the database schema linked below](/docs/schema.svg)\
 _[textual representation of the database schema in DBML](/docs/schema.dbml)_
 
-1. Create a new Postgres database named `jukebox`.
+1. Create a new Postgres database named `jukebox-pro`.
 2. Initialize Prisma and connect it to the database.
 3. Define the models according to the schema above.
-   - One User can own many Playlists.
-   - There is an _implicit_ m-n relation between Playlist and Track.
-     - One Playlist can have many Tracks.
-     - One Track can be in many Playlists.
-   - Playlist is the relation table for the _explicit_ m-n relation between User and Track.
-4. Seed the database with at least 5 users, 20 tracks, and 10 playlists. Each playlist should be owned by a random user and should contain at least 8 tracks.
+   - The `username` of a User must be unique.
+4. Seed the database with at least 20 tracks.
 
 ## API
 
-Once your database is properly seeded, build an Express app that serves the following routes. Use appropriate body-pasing and error-handling middleware!
+Build an Express app that serves the following routes.
 
-`/users` router
+The 🔒 lock icon next to a route indicates that it must be a protected route. A user can only access that route by attaching a valid token to their request. If a valid token is not provided, immediately send a 401 Unauthorized error.
 
-- `GET /users` sends array of all users
-- `GET /users/:id` sends specific user, including all owned playlists
+### Authentication Routes
 
-`/playlists` router
+- `POST /register` creates a new User with the provided credentials and sends a token
+  - request body should include username and password
+  - the password should be hashed in the database
+- `POST /login` sends a token if the provided credentials are valid
+  - request body should include username and password
 
-- `GET /playlists` sends array of all playlists
-- `POST /playlists` creates a new playlist
-  - the request should indicate the owner of the playlist and the tracks in the playlist
-- `GET /playlists/:id` sends specific playlist, including all tracks
+### Playlist Routes
 
-`/tracks` router
+- 🔒 `GET /playlists` sends array of all playlists owned by the logged in user
+- 🔒 `POST /playlists` creates a new playlist owned by the logged in user
+  - the request body should include the name, description, and trackIds
+- 🔒 `GET /playlists/:id` sends specific playlist, including all tracks
+  - if the logged-in user does not own this playlist, send a 403 Forbidden error
+
+### Track Routes
 
 - `GET /tracks` sends array of all tracks
 - `GET /tracks/:id` sends specific track
+  - if user is logged in, then also include all playlists owned by the user that have this track

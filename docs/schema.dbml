@@ -1,6 +1,6 @@
 Table User {
   id        Int     [pk, increment]
-  username  String
+  email  String
   playlists Playlist[]
 }
 
