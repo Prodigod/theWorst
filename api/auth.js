@@ -49,7 +49,7 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-/** Checks the request for an authenticated customer. */
+
 function authenticate(req, res, next) {
   if (req.user) {
     next();
@@ -58,7 +58,7 @@ function authenticate(req, res, next) {
   }
 }
 
-// Notice how we export the router _and_ the `authenticate` middleware!
+
 module.exports = {
   router,
   authenticate,
